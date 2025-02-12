@@ -1,6 +1,3 @@
-// @ts-ignore
-import dotenv from 'dotenv';
-
 export class LLMAdapter{
     protected apiKey: string;
 
