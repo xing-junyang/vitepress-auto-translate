@@ -5,6 +5,7 @@ import { Translator } from './translator';
 // @ts-ignore
 import dotenv from 'dotenv';
 import {FileInfo} from "./types";
+import {getLanguageFullName} from "./languages";
 
 dotenv.config();
 
@@ -32,9 +33,10 @@ program
 
             for (const file of files) {
                 for (const lang of options.languages) {
-                    console.log(`Translating ${file.path} to ${lang}...`);
-                    const translatedContent = await translator.translate(file.content, lang);
-                    await fileHandler.writeTranslatedFile(file.path, translatedContent, lang);
+                    const langFullName = getLanguageFullName(lang);
+                    console.log(`Translating ${file.path} to ${langFullName}...`);
+                    const translatedContent = await translator.translate(file.content, langFullName);
+                    await fileHandler.writeTranslatedFile(file.path, translatedContent, langFullName);
                 }
             }
 
