@@ -2,7 +2,6 @@
 import { Command } from 'commander';
 import { FileHandler } from './fileHandler';
 import { Translator } from './translator';
-// @ts-ignore
 import dotenv from 'dotenv';
 import {FileInfo} from "./types";
 import {getLanguageFullName} from "./languages";
@@ -15,10 +14,10 @@ program
     .name('vitepress-auto-translate')
     .description('CLI to translate VitePress documentation')
     .version('1.0.0')
-    .option('-s, --source <path>', 'Source directory path', 'docs')
+    .option('-s, --source <paths>', 'Source directory path', 'docs')
     .option('-l, --languages <languages...>', 'Target languages', ['es', 'fr'])
     .option('-e, --exclude <patterns...>', 'Patterns to exclude', [])
-    .option('-t, --llm <llm>', 'Language model to use', 'siliconflow')
+    .option('-m, --llm <llm>', 'Language model to use', 'siliconflow')
     .action(async (options) => {
         try {
             const apiKey = process.env.API_KEY;
@@ -27,7 +26,7 @@ program
             }
 
             const fileHandler = new FileHandler(options.source);
-            const translator = new Translator(options.llm, apiKey);
+            const translator = new Translator(apiKey, options.llm);
 
             const files: FileInfo[] = await fileHandler.getMarkdownFiles(options.exclude);
 
@@ -36,13 +35,15 @@ program
                     const langFullName = getLanguageFullName(lang);
                     console.log(`Translating ${file.path} to ${langFullName}...`);
                     const translatedContent = await translator.translate(file.content, langFullName);
-                    await fileHandler.writeTranslatedFile(file.path, translatedContent, langFullName);
+                    await fileHandler.writeTranslatedFile(file.path, translatedContent, lang);
                 }
             }
 
             console.log('Translation completed successfully!');
         } catch (error) {
-            console.error('Error:', error);
+            console.error(error);
             process.exit(1);
         }
     });
+
+program.parse(process.argv);
