@@ -1,5 +1,4 @@
 import { MarkdownParser } from './markdownParser';
-import { TranslationSegment } from './types';
 import {LLMAdapter} from "./llm_adapter/llm_adapter";
 import {Siliconflow} from "./llm_adapter/siliconflow";
 import {Openai} from "./llm_adapter/openai";
@@ -16,8 +15,7 @@ export class Translator {
         }else if(llm === 'openai') {
             this.llmAdapter = new Openai(apikey);
         }else{
-            console.error('Error: No LLM adapter found');
-            throw new Error('Error: No LLM adapter found');
+            throw new Error('No LLM adapter found');
         }
     }
 
