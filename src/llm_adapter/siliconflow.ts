@@ -1,4 +1,5 @@
 import {LLMAdapter} from "./llm_adapter";
+import axios from "axios";
 
 export class Siliconflow extends LLMAdapter {
     constructor(apiKey: string) {
@@ -7,23 +8,37 @@ export class Siliconflow extends LLMAdapter {
     async translate(content: string, targetLang: string) {
         const options = {
             method: 'POST',
-            headers: {Authorization: 'Bearer api', 'Content-Type': 'application/json'},
-            body: `{"model":"deepseek-ai/DeepSeek-V3","messages":[{"content":"Translate the following text sections to ${targetLang}. Each section is separated by ---. Preserve all markdown syntax and formatting. Return translations in the same format.","role":"system"},{"role":"user","content":"${content}"}]}`
-        }
+            url: 'https://api.siliconflow.cn/v1/chat/completions',
+            headers: {
+                Authorization: 'Bearer ' + this.apiKey,
+                'Content-Type': 'application/json',
+            },
+            data: {
+                model: 'deepseek-ai/DeepSeek-V3',
+                messages: [
+                    {
+                        content: `Translate the following text sections to ${targetLang}. Each section is separated by ---. Preserve all markdown syntax and formatting. Return translations in the same format.`,
+                        role: 'system',
+                    },
+                    {
+                        role: 'user',
+                        content: content,
+                    },
+                ],
+            },
+        };
 
-        const response: Response | void = await fetch('https://api.siliconflow.cn/v1/chat/completions', options)
-            .then(response => {
-                console.log(response)
-                return response;
-            })
-            .catch(err => console.error(err));
+        try {
+            const response = await axios(options);
+            const data = response.data;
 
-        if (response) {
-            const data = await response.json();
-            return data.choices[0].message.content;
-        }else{
-            console.error('Error: No response from siliconflow API');
-            throw new Error('Error: No response from siliconflow API');
+            if (data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content) {
+                return data.choices[0].message.content;
+            } else {
+                throw new Error('Invalid response structure: '+ data);
+            }
+        } catch (error) {
+            throw new Error('Error: API call failed.' + error);
         }
     }
 }
