@@ -4,7 +4,7 @@ Internationalize `Vitepress` repository automatically by using LLMs. This tool i
 
 ## Quick Start
 
-This section will take you a quick glance at how to use this tool to translate your `Vitepress` repository. 
+This section will take you a quick glance at how to use this tool to translate your `Vitepress` repository.
 
 ### Installation
 
@@ -14,11 +14,9 @@ Change to your `Vitepress` repository and install the tool using `npm`:
 npm install vitepress-auto-translate
 ```
 
-::: tip NOTE
+> [!NOTE]
+> This tool requires `Node.js` version 16 or above.
 
-This tool requires `Node.js` version 16 or above.
-
-:::
 
 ### Prepare Your API Key
 
@@ -51,11 +49,5 @@ Multiple languages can be done at once:
 npx vitepress-auto-translate -s docs -l zh en fr
 ```
 
-::: tip HINT
-
-You can use the `-h` option to get more help information about the command.
-
-:::
-
-
-
+> [!TIP]
+> You can use the `-h` option to get more help information about the command.
