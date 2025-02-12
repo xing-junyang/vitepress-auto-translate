@@ -2,23 +2,31 @@
   "name": "vitepress-auto-translate",
   "version": "1.0.0",
   "description": "Internationalize vitepress repository automatically by using LLMs.",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "main": "dist/index.js",
+  "bin": {
+    "vitepress-auto-translate": "./dist/index.js"
   },
+  "scripts": {
+    "build": "tsc",
+    "prepare": "npm run build"
+  },
+  "files": [
+    "dist"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/xing-junyang/vitepress-auto-translate.git"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "xing-junyang",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/xing-junyang/vitepress-auto-translate/issues"
   },
   "homepage": "https://github.com/xing-junyang/vitepress-auto-translate#readme",
   "devDependencies": {
     "@rollup/plugin-babel": "^6.0.4",
+    "@types/fs-extra": "^11.0.4",
     "@types/markdown-it": "^14.1.2",
     "@types/node": "^22.13.1",
     "jest": "^29.7.0",
@@ -28,10 +36,12 @@
   },
   "dependencies": {
     "dotenv": "^16.4.7",
+    "fs-extra": "^11.3.0",
     "markdown-it": "^14.1.0",
     "markdown-it-container": "^4.0.0",
     "markdown-it-front-matter": "^0.2.4",
     "markdown-it-math": "^4.1.1",
-    "openai": "^4.83.0"
+    "openai": "^4.83.0",
+    "path": "^0.12.7"
   }
 }
