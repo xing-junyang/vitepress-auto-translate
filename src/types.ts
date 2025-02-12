@@ -9,3 +9,8 @@ export interface TranslationResult {
     original: string;
     translated: string;
 }
+
+export interface FileInfo {
+    path: string;
+    content: string;
+}
