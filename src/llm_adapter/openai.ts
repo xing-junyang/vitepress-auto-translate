@@ -4,8 +4,8 @@ import {OpenAI} from "openai";
 export class Openai extends LLMAdapter {
     private openai: OpenAI;
 
-    constructor() {
-        super();
+    constructor(apiKey: string) {
+        super(apiKey);
         this.openai = new OpenAI({apiKey: this.apiKey});
     }
 

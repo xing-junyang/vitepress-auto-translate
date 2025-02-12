@@ -1,8 +1,8 @@
 import {LLMAdapter} from "./llm_adapter";
 
 export class Siliconflow extends LLMAdapter {
-    constructor() {
-        super();
+    constructor(apiKey: string) {
+        super(apiKey);
     }
     async translate(content: string, targetLang: string) {
         const options = {
