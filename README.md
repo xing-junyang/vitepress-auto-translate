@@ -1,5 +1,9 @@
 # vitepress-auto-translate
 
+[![npm version](https://img.shields.io/npm/v/vitepress-auto-translate.svg?logo=npm)](https://www.npmjs.com/package/vitepress-auto-translate)
+[![npm downloads](https://img.shields.io/npm/dm/vitepress-auto-translate.svg)](https://www.npmjs.com/package/vitepress-auto-translate)
+[![License: MIT](https://img.shields.io/npm/l/vitepress-auto-translate.svg)](https://github.com/xing-junyang/vitepress-auto-translate/blob/master/LICENSE)
+
 Internationalize `Vitepress` repository automatically by using LLMs. This tool is designed to help you translate your markdown files in a `Vitepress` repository to multiple languages **automatically**, leveraging the power of LLMs to generate high-quality translations.
 
 ## Quick Start
