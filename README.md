@@ -51,3 +51,51 @@ npx vitepress-auto-translate -s docs -l zh en fr
 
 > [!TIP]
 > You can use the `-h` option to get more help information about the command.
+
+## Features
+
+- **High-Quality Translation**: This tool uses LLMs to generate high-quality translations.
+- **Multiple Languages**: You can translate your repository to multiple languages at once.
+- **Markdown Parsing**: This tool can parse markdown files, extract text, and translate them, which can preserve the code blocks, math blocks, etc.
+
+## Full List of Options
+
+Here is a full list of options you can use with this tool:
+
+```bash
+Usage: vitepress-auto-translate [options]
+```
+
+| Option                           | Description                                       | Default        | Choices                                                                                       |
+|----------------------------------|---------------------------------------------------|----------------|-----------------------------------------------------------------------------------------------|
+| `-s, --source <source>`          | The source directory of the markdown files.       | `docs`         | `<pathname>`                                                                                  |
+| `-l, --languages <languages...>` | The target languages to translate to.             | `['es', 'fr']` | `['en', 'es', 'fr', 'de', 'it', 'pt', 'nl', 'pl', 'ru', 'ja', 'ko', 'zh', 'tzh', 'ar', 'tr']` |
+| `-m, --model <model>`            | The LLM provider to use.                          | `siliconflow`  | `['siliconflow', 'openai']`                                                                   |
+| `-e --exclude <exclude...>`      | The filename pattern to exclude.                  | `[]`           | `<regex>`                                                                                     |
+| `-r --retries <retries>`         | The number of retries when the translation fails. | `3`            | `<number>`                                                                                    |
+| `-h, --help`                     | Display help for command.                         |                |                                                                                               |
+
+> [!TIP]
+> The choices of `--languages` option correspond to the language listed below:
+> | Code | Language           |
+> |------|--------------------|
+> | en   | English            |
+> | es   | Spanish            |
+> | fr   | French             |
+> | de   | German             |
+> | it   | Italian            |
+> | pt   | Portuguese         |
+> | nl   | Dutch              |
+> | pl   | Polish             |
+> | ru   | Russian            |
+> | ja   | Japanese           |
+> | ko   | Korean             |
+> | zh   | Simplified Chinese |
+> | tzh  | Traditional Chinese|
+> | ar   | Arabic             |
+> | tr   | Turkish            |
+
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

@@ -16,7 +16,7 @@ program
     .version('1.0.0')
     .option('-s, --source <paths>', 'Source directory path', 'docs')
     .option('-l, --languages <languages...>', 'Target languages', ['es', 'fr'])
-    .option('-e, --exclude <patterns...>', 'Patterns to exclude', [])
+    .option('-e, --exclude <patterns...>', 'Filename patterns to exclude', [])
     .option('-m, --llm <llm>', 'Language model to use', 'siliconflow')
     .option('-r, --retries <retries>', 'Max retries', '3')
     .action(async (options) => {
