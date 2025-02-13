@@ -24,11 +24,6 @@ export class Translator {
     async translate(content: string, targetLang: string, maxRetries: number): Promise<string> {
         try {
             const segments = await this.markdownParser.parse(content);
-            // write segments to file
-            const fs = require('fs');
-            const path = require('path');
-            const filePath = path.join('./docs', 'segments.json');
-            fs.writeFileSync(filePath, JSON.stringify(segments, null, 2));
             const translationNeeded = segments.filter(s => s.needsTranslation);
             const progressBar = new cliProgress.SingleBar({}, cliProgress.Presets.shades_classic);
             const totalSegments = translationNeeded.length;
