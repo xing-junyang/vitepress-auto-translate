@@ -1,6 +1,6 @@
 {
   "name": "vitepress-auto-translate",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Internationalize vitepress repository automatically by using LLMs.",
   "main": "dist/index.js",
   "bin": {
