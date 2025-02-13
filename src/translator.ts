@@ -2,6 +2,8 @@ import { MarkdownParser } from './markdownParser';
 import {LLMAdapter} from "./llm_adapter/llm_adapter";
 import {Siliconflow} from "./llm_adapter/siliconflow";
 import {Openai} from "./llm_adapter/openai";
+// @ts-ignore
+import cliProgress from 'cli-progress';
 
 
 export class Translator {
@@ -19,14 +21,20 @@ export class Translator {
         }
     }
 
-    async translate(content: string, targetLang: string): Promise<string> {
+    async translate(content: string, targetLang: string, maxRetries: number): Promise<string> {
         try {
             const segments = await this.markdownParser.parse(content);
+            // write segments to file
+            const fs = require('fs');
+            const path = require('path');
+            const filePath = path.join('./docs', 'segments.json');
+            fs.writeFileSync(filePath, JSON.stringify(segments, null, 2));
             const translationNeeded = segments.filter(s => s.needsTranslation);
-
+            const progressBar = new cliProgress.SingleBar({}, cliProgress.Presets.shades_classic);
+            const totalSegments = translationNeeded.length;
+            progressBar.start(totalSegments, 0);
             const batchSize = 5;
-            const maxRetries = 3;
-            for (let i = 0; i < translationNeeded.length; i += batchSize) {
+            for (let i = 0; i < totalSegments; i += batchSize) {
                 const batch = translationNeeded.slice(i, Math.min(i + batchSize, translationNeeded.length));
                 const batchContent = batch.map(s => s.content).join('\n---\n');
                 let response = await this.llmAdapter.translate(batchContent, targetLang);
@@ -45,7 +53,9 @@ export class Translator {
                 batch.forEach((segment, index) => {
                     segment.content = translations[index]?.trim() || segment.content;
                 });
+                progressBar.update(i + (i + batchSize > totalSegments ? totalSegments - i : batchSize));
             }
+            progressBar.stop();
 
             return await this.markdownParser.reconstruct(segments);
 

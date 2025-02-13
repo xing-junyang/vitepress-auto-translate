@@ -18,6 +18,7 @@ program
     .option('-l, --languages <languages...>', 'Target languages', ['es', 'fr'])
     .option('-e, --exclude <patterns...>', 'Patterns to exclude', [])
     .option('-m, --llm <llm>', 'Language model to use', 'siliconflow')
+    .option('-r, --retries <retries>', 'Max retries', '3')
     .action(async (options) => {
         try {
             const apiKey = process.env.API_KEY;
@@ -34,7 +35,7 @@ program
                 for (const lang of options.languages) {
                     const langFullName = getLanguageFullName(lang);
                     console.log(`Translating ${file.path} to ${langFullName}...`);
-                    const translatedContent = await translator.translate(file.content, langFullName);
+                    const translatedContent = await translator.translate(file.content, langFullName, options.retries);
                     await fileHandler.writeTranslatedFile(file.path, translatedContent, lang);
                 }
             }

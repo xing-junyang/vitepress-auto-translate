@@ -17,7 +17,7 @@ export class Siliconflow extends LLMAdapter {
                 model: 'deepseek-ai/DeepSeek-V3',
                 messages: [
                     {
-                        content: `Translate the following text sections to ${targetLang}. Each section is separated by ---. Preserve all markdown syntax and formatting. Return translations in the same format.`,
+                        content: `Translate the following text sections to ${targetLang}. Each section is separated by ---. Must preserve all markdown syntax and formatting. Return translations in the same format.`,
                         role: 'system',
                     },
                     {
@@ -38,7 +38,8 @@ export class Siliconflow extends LLMAdapter {
                 throw new Error('Invalid response structure: '+ data);
             }
         } catch (error) {
-            throw new Error('Error: API call failed.' + error);
+            console.error('Siliconflow translation error:', error);
+            return null;
         }
     }
 }
