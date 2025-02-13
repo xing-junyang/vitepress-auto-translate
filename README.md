@@ -24,7 +24,7 @@ npm install vitepress-auto-translate
 
 ### Prepare Your API Key
 
-This tool now supports two LLM providers: [`SiliconFlow`](https://siliconflow.cn/zh-cn/) and [`OpenAI`](https://platform.openai.com/docs/guides/language-models). You need to get an API key from one of them to use this tool.
+This tool now supports two LLM providers: [`SiliconFlow`](https://siliconflow.cn/zh-cn/) and [`OpenAI`](https://platform.openai.com/docs/guides/language-models). You need to get an API key from one of them to use this tool. It will use `deepseek-ai/DeepSeek-V3`(**SiliconFlow**) or `gpt-3.5-turbo`(**OpenAI**) as translator LLM.
 
 After you get the API key, you can set it in the environment file `.env` in the root directory of your vitepress repository:
 
