@@ -22,7 +22,7 @@ export class MarkdownParser {
         // code blocks
         this.md.renderer.rules.fence = (tokens, idx) => {
             const token = tokens[idx];
-            if(token.map == null){
+            if (token.map == null) {
                 throw new Error('Token map is null');
             }
             this.segments.push({
@@ -37,7 +37,7 @@ export class MarkdownParser {
         // math blocks
         this.md.renderer.rules.math_block = (tokens, idx) => {
             const token = tokens[idx];
-            if(token.map == null){
+            if (token.map == null) {
                 throw new Error('Token map is null');
             }
             this.segments.push({
@@ -52,7 +52,7 @@ export class MarkdownParser {
         // html blocks (e.g. front matter)
         this.md.renderer.rules.html_block = (tokens, idx) => {
             const token = tokens[idx];
-            if(token.map == null){
+            if (token.map == null) {
                 throw new Error('Token map is null');
             }
             this.segments.push({
@@ -65,7 +65,23 @@ export class MarkdownParser {
         };
     }
 
-    async parse(content: string): Promise<TranslationSegment[]> {
+    pushTextSegment(content: string, startLine: number, endLine: number, segment_lower_bound: number): void {
+        let segmentContent = this.getTextSegment(content, startLine, endLine);
+        let lines = segmentContent.split('\n');
+        // console.log(segment_lower_bound, startLine, lines)
+        for (let i = 0; i < lines.length; i += segment_lower_bound) {
+            let segment = lines.slice(i, Math.min(i + segment_lower_bound, lines.length)).join('\n');
+            this.segments.push({
+                type: 'text',
+                content: segment,
+                needsTranslation: true,
+                tokenIndex: [startLine + i, startLine + i + segment.split('\n').length],
+                length: segment.length
+            });
+        }
+    }
+
+    async parse(content: string, segment_lower_bound: number): Promise<TranslationSegment[]> {
         this.segments = [];
         // render Markdown: get special blocks
         this.md.render(content);
@@ -74,25 +90,20 @@ export class MarkdownParser {
         let startLine = 0;
         let endLine = content.split('\n').length;
         let len = this.segments.length;
-        for(let i = 0; i < len; i++){
+        for (let i = 0; i < len; i++) {
             endLine = this.segments[i].tokenIndex[0];
-            this.segments.push({
-                type: 'text',
-                content: this.getTextSegment(content, startLine, endLine),
-                needsTranslation: true,
-                tokenIndex: [startLine, endLine],
-                length: this.getTextSegment(content, startLine, endLine).length
-            });
+            this.pushTextSegment(content, startLine, endLine, segment_lower_bound);
             startLine = this.segments[i].tokenIndex[1];
         }
         //adding last text segment
-        this.segments.push({
-            type: 'text',
-            content: this.getTextSegment(content, startLine, endLine),
-            needsTranslation: true,
-            tokenIndex: [startLine, endLine],
-            length: this.getTextSegment(content, startLine, endLine).length
-        });
+        // this.segments.push({
+        //     type: 'text',
+        //     content: this.getTextSegment(content, startLine, endLine),
+        //     needsTranslation: true,
+        //     tokenIndex: [startLine, endLine],
+        //     length: this.getTextSegment(content, startLine, endLine).length
+        // });
+        this.pushTextSegment(content, startLine, endLine, segment_lower_bound);
 
         //sorting segments by token index
         this.segments.sort((a, b) => {

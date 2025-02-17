@@ -23,7 +23,8 @@ export class Translator {
 
     async translate(content: string, targetLang: string, maxRetries: number): Promise<string> {
         try {
-            const segments = await this.markdownParser.parse(content);
+            const segment_lower_bound = 4;
+            const segments = await this.markdownParser.parse(content, segment_lower_bound);
             const translationNeeded = segments.filter(s => s.needsTranslation);
             const progressBar = new cliProgress.SingleBar({}, cliProgress.Presets.shades_classic);
             const totalSegments = translationNeeded.length;
