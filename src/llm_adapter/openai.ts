@@ -4,9 +4,9 @@ import {OpenAI} from "openai";
 export class Openai extends LLMAdapter {
     private openai: OpenAI;
 
-    constructor(apiKey: string) {
+    constructor(apiKey: string, baseURL: string) {
         super(apiKey);
-        this.openai = new OpenAI({apiKey: this.apiKey});
+        this.openai = new OpenAI({apiKey: this.apiKey, baseURL: baseURL});
     }
 
     async translate(content: string, targetLang: string) {
@@ -18,7 +18,7 @@ export class Openai extends LLMAdapter {
                     {
                         role: "system",
                         content: `Translate the following text sections to ${targetLang}. 
-                     Each section is separated by ---. 
+                     Each section is separated by ------. 
                      Preserve all markdown syntax and formatting.
                      Return translations in the same format.`
                     },

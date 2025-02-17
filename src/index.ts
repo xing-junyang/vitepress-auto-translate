@@ -19,6 +19,7 @@ program
     .option('-e, --exclude <patterns...>', 'Filename patterns to exclude', [])
     .option('-m, --llm <llm>', 'Language model to use', 'siliconflow')
     .option('-r, --retries <retries>', 'Max retries', '3')
+    .option('-b, --baseURL <baseURL>', 'Base URL for LLM API', 'https://api.siliconflow.cn')
     .action(async (options) => {
         try {
             const apiKey = process.env.API_KEY;
@@ -27,7 +28,7 @@ program
             }
 
             const fileHandler = new FileHandler(options.source);
-            const translator = new Translator(apiKey, options.llm);
+            const translator = new Translator(apiKey, options.llm, options.baseURL);
 
             const files: FileInfo[] = await fileHandler.getMarkdownFiles(options.exclude);
 

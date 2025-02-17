@@ -2,13 +2,16 @@ import {LLMAdapter} from "./llm_adapter";
 import axios from "axios";
 
 export class Siliconflow extends LLMAdapter {
-    constructor(apiKey: string) {
+    private readonly baseURL: string = '';
+
+    constructor(apiKey: string, baseURL: string) {
         super(apiKey);
+        this.baseURL = baseURL;
     }
     async translate(content: string, targetLang: string) {
         const options = {
             method: 'POST',
-            url: 'https://api.siliconflow.cn/v1/chat/completions',
+            url: this.baseURL,
             headers: {
                 Authorization: 'Bearer ' + this.apiKey,
                 'Content-Type': 'application/json',
@@ -17,7 +20,7 @@ export class Siliconflow extends LLMAdapter {
                 model: 'deepseek-ai/DeepSeek-V3',
                 messages: [
                     {
-                        content: `Translate the following text sections to ${targetLang}. Each section is separated by ---. Must preserve all markdown syntax and formatting. Return translations in the same format.`,
+                        content: `Translate the following text sections to ${targetLang}. Each section is separated by ------. Must preserve all markdown syntax and formatting. Return translations in the same format.`,
                         role: 'system',
                     },
                     {
@@ -26,6 +29,7 @@ export class Siliconflow extends LLMAdapter {
                     },
                 ],
             },
+            timeout: 100000,
         };
 
         try {
@@ -38,7 +42,7 @@ export class Siliconflow extends LLMAdapter {
                 throw new Error('Invalid response structure: '+ data);
             }
         } catch (error) {
-            console.error('Siliconflow translation error:', error);
+            console.error('Siliconflow translation error:');
             return null;
         }
     }

@@ -10,12 +10,12 @@ export class Translator {
     private markdownParser: MarkdownParser;
     private llmAdapter: LLMAdapter
 
-    constructor(apikey: string, llm: string) {
+    constructor(apikey: string, llm: string, baseURL: string) {
         this.markdownParser = new MarkdownParser();
         if(llm === 'siliconflow'){
-            this.llmAdapter = new Siliconflow(apikey);
+            this.llmAdapter = new Siliconflow(apikey, baseURL);
         }else if(llm === 'openai') {
-            this.llmAdapter = new Openai(apikey);
+            this.llmAdapter = new Openai(apikey, baseURL);
         }else{
             throw new Error('No LLM adapter found');
         }
@@ -31,20 +31,20 @@ export class Translator {
             const batchSize = 5;
             for (let i = 0; i < totalSegments; i += batchSize) {
                 const batch = translationNeeded.slice(i, Math.min(i + batchSize, translationNeeded.length));
-                const batchContent = batch.map(s => s.content).join('\n---\n');
+                const batchContent = batch.map(s => s.content).join('\n------\n');
                 let response = await this.llmAdapter.translate(batchContent, targetLang);
                 let retryCount = 0;
                 while(!response){
-                    if(retryCount === maxRetries){
+                    if(retryCount >= maxRetries){
                         console.error('Error: Max retries exceeded');
                         throw new Error('Max retries exceeded');
                     }
-                    console.log('Retrying translation...');
-                    retryCount--;
+                    console.log(`Retrying translation... ${maxRetries - retryCount} attempts left.` );
+                    retryCount++;
                     response = await this.llmAdapter.translate(batchContent, targetLang);
                 }
 
-                const translations = response.split('\n---\n') || [];
+                const translations = response.split('\n------\n') || [];
                 batch.forEach((segment, index) => {
                     segment.content = translations[index]?.trim() || segment.content;
                 });
