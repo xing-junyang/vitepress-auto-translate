@@ -70,14 +70,16 @@ Here is a full list of options you can use with this tool:
 Usage: vitepress-auto-translate [options]
 ```
 
-| Option                           | Description                                       | Default        | Choices                                                                                       |
-|----------------------------------|---------------------------------------------------|----------------|-----------------------------------------------------------------------------------------------|
-| `-s, --source <source>`          | The source directory of the markdown files.       | `docs`         | `<pathname>`                                                                                  |
-| `-l, --languages <languages...>` | The target languages to translate to.             | `['es', 'fr']` | `['en', 'es', 'fr', 'de', 'it', 'pt', 'nl', 'pl', 'ru', 'ja', 'ko', 'zh', 'tzh', 'ar', 'tr']` |
-| `-m, --model <model>`            | The LLM provider to use.                          | `siliconflow`  | `['siliconflow', 'openai']`                                                                   |
-| `-e --exclude <exclude...>`      | The filename pattern to exclude.                  | `[]`           | `<regex>`                                                                                     |
-| `-r --retries <retries>`         | The number of retries when the translation fails. | `3`            | `<number>`                                                                                    |
-| `-h, --help`                     | Display help for command.                         |                |                                                                                               |
+| Option                           | Description                                       | Default                      | Choices                                                                                       |
+|----------------------------------|---------------------------------------------------|------------------------------|-----------------------------------------------------------------------------------------------|
+| `-s, --source <source>`          | The source directory of the markdown files.       | `docs`                       | `<pathname>`                                                                                  |
+| `-l, --languages <languages...>` | The target languages to translate to.             | `['es', 'fr']`               | `['en', 'es', 'fr', 'de', 'it', 'pt', 'nl', 'pl', 'ru', 'ja', 'ko', 'zh', 'tzh', 'ar', 'tr']` |
+| `-p, --provider <provider>`      | The LLM provider to use.                          | `siliconflow`                | `['siliconflow', 'openai']`                                                                   |
+| `-m, --model <model>`            | The LLM model to use.                             | `deepseek-ai/DeepSeek-V3`    | `<model>`                                                                                     |
+| `-e --exclude <exclude...>`      | The filename pattern to exclude.                  | `[]`                         | `<regex>`                                                                                     |
+| `-r --retries <retries>`         | The number of retries when the translation fails. | `3`                          | `<number>`                                                                                    |
+| `-b, --baseURL <baseURL>`        | The base URL of LLM API.                          | `https://api.siliconflow.cn` | `<url>`                                                                                       |
+| `-h, --help`                     | Display help for command.                         |                              |                                                                                               |
 
 > [!TIP]
 > The choices of `--languages` option correspond to the language listed below:
