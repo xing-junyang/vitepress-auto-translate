@@ -17,7 +17,8 @@ program
     .option('-s, --source <paths>', 'Source directory path', 'docs')
     .option('-l, --languages <languages...>', 'Target languages', ['es', 'fr'])
     .option('-e, --exclude <patterns...>', 'Filename patterns to exclude', [])
-    .option('-m, --llm <llm>', 'Language model to use', 'siliconflow')
+    .option('-m, --llm <llm>', 'Language model to use', 'deepseek-ai/DeepSeek-V3')
+    .option('-p --provider <provider>', 'Translation provider', 'siliconflow')
     .option('-r, --retries <retries>', 'Max retries', '3')
     .option('-b, --baseURL <baseURL>', 'Base URL for LLM API', 'https://api.siliconflow.cn')
     .action(async (options) => {
@@ -28,7 +29,7 @@ program
             }
 
             const fileHandler = new FileHandler(options.source);
-            const translator = new Translator(apiKey, options.llm, options.baseURL);
+            const translator = new Translator(apiKey, options.provider,options.baseURL, options.llm);
 
             const files: FileInfo[] = await fileHandler.getMarkdownFiles(options.exclude);
 

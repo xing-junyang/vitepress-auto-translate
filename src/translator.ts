@@ -10,12 +10,12 @@ export class Translator {
     private markdownParser: MarkdownParser;
     private llmAdapter: LLMAdapter
 
-    constructor(apikey: string, llm: string, baseURL: string) {
+    constructor(apikey: string, llm_provider: string, baseURL: string, model: string) {
         this.markdownParser = new MarkdownParser();
-        if(llm === 'siliconflow'){
-            this.llmAdapter = new Siliconflow(apikey, baseURL);
-        }else if(llm === 'openai') {
-            this.llmAdapter = new Openai(apikey, baseURL);
+        if(llm_provider === 'siliconflow'){
+            this.llmAdapter = new Siliconflow(apikey, baseURL, model);
+        }else if(llm_provider === 'openai') {
+            this.llmAdapter = new Openai(apikey, baseURL, model);
         }else{
             throw new Error('No LLM adapter found');
         }

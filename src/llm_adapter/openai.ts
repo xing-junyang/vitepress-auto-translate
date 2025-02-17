@@ -3,17 +3,19 @@ import {OpenAI} from "openai";
 
 export class Openai extends LLMAdapter {
     private openai: OpenAI;
+    private readonly model: string = '';
 
-    constructor(apiKey: string, baseURL: string) {
+    constructor(apiKey: string, baseURL: string, model: string) {
         super(apiKey);
         this.openai = new OpenAI({apiKey: this.apiKey, baseURL: baseURL});
+        this.model = model;
     }
 
     async translate(content: string, targetLang: string) {
         //     translate using openai
         try{
             const response = await this.openai.chat.completions.create({
-                model: "gpt-3.5-turbo", // or "gpt-4"
+                model: this.model,
                 messages: [
                     {
                         role: "system",

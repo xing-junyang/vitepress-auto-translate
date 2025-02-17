@@ -3,10 +3,12 @@ import axios from "axios";
 
 export class Siliconflow extends LLMAdapter {
     private readonly baseURL: string = '';
+    private readonly model: string = '';
 
-    constructor(apiKey: string, baseURL: string) {
+    constructor(apiKey: string, baseURL: string, model: string) {
         super(apiKey);
         this.baseURL = baseURL;
+        this.model = model;
     }
     async translate(content: string, targetLang: string) {
         const options = {
@@ -17,7 +19,7 @@ export class Siliconflow extends LLMAdapter {
                 'Content-Type': 'application/json',
             },
             data: {
-                model: 'deepseek-ai/DeepSeek-V3',
+                model: this.model,
                 messages: [
                     {
                         content: `Translate the following text sections to ${targetLang}. Each section is separated by ------. Must preserve all markdown syntax and formatting. Return translations in the same format.`,
